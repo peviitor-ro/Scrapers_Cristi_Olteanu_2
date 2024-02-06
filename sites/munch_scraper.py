@@ -39,9 +39,7 @@ munch = MunchScraper(
     company_name='munch',
     url='https://careers.munch.eco/jobs',
     logo_url='https://images.teamtailor-cdn.com/images/s3/teamtailor-production/logotype-v3/image_uploads/545c8b01-f937-4b14-9bcd-abf5d2a8f7ef/original.png'
-
 )
-
 
 munch.get_jobs()
 munch.push_peviitor()
