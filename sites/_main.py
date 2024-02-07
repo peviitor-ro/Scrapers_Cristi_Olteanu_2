@@ -7,7 +7,7 @@ exclude = [
     'county.py',
     'scrapers.py',
     'update_peviitor.py',
-    '_main.py'
+    '_main.py',
 ]
 
 for site in os.listdir(path):
