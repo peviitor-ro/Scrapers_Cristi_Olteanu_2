@@ -6,7 +6,7 @@ path = os.path.dirname(os.path.abspath(__file__))
 exclude = [
     'county.py',
     'scrapers.py',
-    'update_peviitor.py'
+    'update_peviitor.py',
     '_main.py'
 ]
 
