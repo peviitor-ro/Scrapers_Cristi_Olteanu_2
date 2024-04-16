@@ -53,8 +53,6 @@ class Scraper:
                 return None
         return cookies
 
-    def get_county(self, city):
-        return get_county(city)
 
     def get_jobs_dict(self, job_title, job_link, city, remote='On-site'):
 
