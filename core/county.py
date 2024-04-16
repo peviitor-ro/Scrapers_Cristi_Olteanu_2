@@ -233,6 +233,7 @@ def get_county(town):
     town = remove_diacritics(town)
     for county in counties:
         for key, value in county.items():
-            if town in value:
+            if town in value[0]:
                 return key
     return None
+
