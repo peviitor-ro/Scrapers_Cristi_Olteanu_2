@@ -1,8 +1,8 @@
 from bs4 import BeautifulSoup
 import requests
-from county import get_county
+from core.county import get_county
 import re
-from update_peviitor import UpdatePeViitor
+from core.update_peviitor import UpdatePeViitor
 
 
 
@@ -14,7 +14,6 @@ class Scraper:
         self.jobs_list = []
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
-            'Accept-Language': 'en-US,en;q=0.5',
             'Refer': 'https://google.com',
             'DNT': '1'
         }
@@ -24,12 +23,17 @@ class Scraper:
         soup = BeautifulSoup(response.text, 'lxml')
         return soup
 
+    def get_link_soup(self, link):
+        response = requests.get(url=link, headers=self.headers)
+        soup = BeautifulSoup(response.text, 'lxml')
+        return soup
+
     def get_json(self, data=None, params=None):
         response = requests.get(self.url, headers=self.headers, data=data, params=params).json()
         return response
 
-    def post_json(self, headers=None, data=None, params=None):
-        response = requests.post(self.url, headers=headers, data=data, params=params).json()
+    def post_json(self, headers=None, json=None, data=None, params=None):
+        response = requests.post(self.url, headers=headers, json=json, data=data, params=params).json()
         return response
 
     def post_html(self, headers=None, data=None, params=None):
@@ -52,12 +56,12 @@ class Scraper:
     def get_county(self, city):
         return get_county(city)
 
-    def get_jobs_dict(self, job_title, job_link, company_name, city, remote='On-site'):
+    def get_jobs_dict(self, job_title, job_link, city, remote='On-site'):
 
         self.jobs_list.append({
             "job_title": job_title,
             "job_link": job_link,
-            "company": company_name,
+            "company": self.company_name,
             "country": 'Romania',
             "county": get_county(city),
             "city": city,
