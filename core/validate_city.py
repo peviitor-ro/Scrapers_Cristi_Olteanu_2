@@ -14,6 +14,6 @@ def validate_city(city):
             if item_city in value:
                 return key
             else:
-                return None
+                return city
 
 
