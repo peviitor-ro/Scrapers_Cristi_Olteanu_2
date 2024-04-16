@@ -3,6 +3,7 @@ import requests
 from core.county import get_county
 import re
 from core.update_peviitor import UpdatePeViitor
+from core.validate_city import validate_city
 
 
 
@@ -53,6 +54,10 @@ class Scraper:
                 return None
         return cookies
 
+
+    @staticmethod
+    def get_validated_city(city):
+        return validate_city(city)
 
     def get_jobs_dict(self, job_title, job_link, city, remote='On-site'):
 
