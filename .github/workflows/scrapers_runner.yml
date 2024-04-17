@@ -28,6 +28,6 @@ jobs:
     - name: All scrapers runs
 
       run: |
-        python3 core/_main.py
+        python3 sites/_main.py
 
 
