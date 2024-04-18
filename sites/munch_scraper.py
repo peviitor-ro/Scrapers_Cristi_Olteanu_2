@@ -1,4 +1,4 @@
-from scrapers import Scraper
+from core.scrapers import Scraper
 
 
 class MunchScraper(Scraper):
@@ -22,6 +22,8 @@ class MunchScraper(Scraper):
 
             if 'Bucharest' in info_job:
                 city = 'Bucuresti'
+            else:
+                city = ''
 
             if 'Hybrid' in info_job:
                 job_type = 'hibrid'
@@ -30,7 +32,7 @@ class MunchScraper(Scraper):
             else:
                 job_type = 'On-site'
 
-            self.get_jobs_dict(title, link, self.company_name, city, job_type)
+            self.get_jobs_dict(title, link, city, job_type)
 
         return self.jobs_list
 
