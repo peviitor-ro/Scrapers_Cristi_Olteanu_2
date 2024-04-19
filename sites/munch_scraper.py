@@ -1,4 +1,4 @@
-from sites.scrapers import Scraper
+from scrapers import Scraper
 
 
 class MunchScraper(Scraper):
