@@ -5,6 +5,11 @@ path = os.path.dirname(os.path.abspath(__file__))
 
 exclude = [
     '_main.py',
+    '__init__.py',
+    'county.py',
+    'scrapers.py',
+    'update_peviitor.py',
+    'validate_city',
 ]
 
 for site in os.listdir(path):

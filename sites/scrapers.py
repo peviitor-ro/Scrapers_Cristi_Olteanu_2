@@ -1,9 +1,9 @@
 from bs4 import BeautifulSoup
 import requests
-from sites.src.county import get_county
+from sites.county import get_county
 import re
-from sites.src.update_peviitor import UpdatePeViitor
-from sites.src.validate_city import validate_city
+from sites.update_peviitor import UpdatePeViitor
+from sites.validate_city import validate_city
 
 
 

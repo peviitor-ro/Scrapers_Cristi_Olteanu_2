@@ -1,4 +1,4 @@
-from sites.src.scrapers import Scraper
+from scrapers import Scraper
 
 
 class Xylem(Scraper):
