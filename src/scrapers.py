@@ -29,8 +29,8 @@ class Scraper:
         soup = BeautifulSoup(response.text, 'lxml')
         return soup
 
-    def get_json(self, data=None, params=None):
-        response = requests.get(self.url, headers=self.headers, data=data, params=params).json()
+    def get_json(self, json=None, data=None, params=None):
+        response = requests.get(self.url, headers=self.headers,json=json, data=data, params=params).json()
         return response
 
     def post_json(self, headers=None, json=None, data=None, params=None):
