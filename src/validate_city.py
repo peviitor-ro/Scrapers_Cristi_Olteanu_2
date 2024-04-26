@@ -2,18 +2,14 @@
 def validate_city(city):
     validated_cities = [
         {'Bucuresti': ['bucharest', 'bucuresti']},
-        {'Cluj-Napoca': ['Cluj-Napoca', 'cluj']}
+        {'Cluj-Napoca': ['cluj napoca', 'cluj']}
     ]
-    try:
-        item_city = city.lower()
-    except:
-        return None
 
     for item in validated_cities:
         for key, value in item.items():
-            if item_city in value:
+            if city.lower() in value:
                 return key
-            else:
-                return city
+    return city
+
 
 

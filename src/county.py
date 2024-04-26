@@ -229,11 +229,32 @@ def remove_diacritics(input_string):
     return ''.join(char for char in normalized_string if not has_diacritics(char))
 
 
-def get_county(town):
-    town = remove_diacritics(town)
-    for county in counties:
-        for key, value in county.items():
-            if town in value[0]:
-                return key
-    return None
+def get_county(town_or_towns):
+    """
+    Returns the corresponding county for a town or a list of towns.
+
+    Args:
+        town_or_towns: A string representing a town or a list of strings representing towns.
+
+    Returns:
+        A string representing the corresponding county (if a single town is input)
+        or a list of strings representing the corresponding counties (if a list of towns is input).
+    """
+
+    if isinstance(town_or_towns, str):
+        # Single town case
+        town = remove_diacritics(town_or_towns)
+        for county in counties:
+            for key, value in county.items():
+                if town in value[0]:
+                    return key
+        return None
+    else:
+        # List of towns case
+        counties_list = []
+        for town in town_or_towns:
+            county = get_county(town)
+            if county:
+                counties_list.append(county)
+        return counties_list
 
