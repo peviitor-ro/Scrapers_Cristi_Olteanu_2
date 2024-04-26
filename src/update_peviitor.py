@@ -7,8 +7,7 @@ import time
 class UpdatePeViitor:
 
     def __init__(self):
-        self.api_key = os.environ.get('API_KEY')
-        self.post_url = 'https://api.laurentiumarian.ro/jobs/add/'
+        self.post_url = 'https://api.peviitor.ro/v5/add/'
         self.logo_url = 'https://api.peviitor.ro/v1/logo/add/'
 
         self.post_header = {
@@ -22,7 +21,7 @@ class UpdatePeViitor:
 
 
     def get_token(self):
-        token_endpoint = 'https://api.laurentiumarian.ro/get_token'
+        token_endpoint = 'https://api.peviitor.ro/v5/get_token/'
 
         token = requests.post(token_endpoint, data={
             "email": 'cristiolteanu1892@gmail.com'
