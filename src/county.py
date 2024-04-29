@@ -244,11 +244,15 @@ def get_county(town_or_towns):
     if isinstance(town_or_towns, str):
         # Single town case
         town = remove_diacritics(town_or_towns)
-        for county in counties:
-            for key, value in county.items():
+        county = None
+        for county_ in counties:
+            for key, value in county_.items():
                 if town in value[0]:
-                    return key
-        return None
+                    county = key
+                    break
+                if town in value:
+                    county = key
+        return county
     else:
         # List of towns case
         counties_list = []
@@ -257,4 +261,5 @@ def get_county(town_or_towns):
             if county:
                 counties_list.append(county)
         return counties_list
+
 

@@ -2,7 +2,11 @@
 def validate_city(city):
     validated_cities = [
         {'Bucuresti': ['bucharest', 'bucuresti']},
-        {'Cluj-Napoca': ['cluj napoca', 'cluj']}
+        {'Cluj-Napoca': ['cluj napoca', 'cluj']},
+        {'Bolintin-Deal': ['bolintin-deal', 'bolintin - deal']},
+        {'Campulung': ['campulung muscel', 'campulung Muscel']},
+        {'Poiana Lacului': ['poiana lacului']}
+
     ]
 
     for item in validated_cities:
