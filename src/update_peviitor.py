@@ -21,7 +21,8 @@ class UpdatePeViitor:
 
 
     def get_token(self):
-        token_endpoint = 'https://api.peviitor.ro/v5/get_token/'
+        #token_endpoint = 'https://api.peviitor.ro/v5/get_token/'
+        token_endpoint = 'https://api.laurentiumarian.ro/get_token'
 
         token = requests.post(token_endpoint, json={
             "email": 'cristiolteanu1892@gmail.com'
