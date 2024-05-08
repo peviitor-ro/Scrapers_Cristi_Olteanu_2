@@ -6,7 +6,6 @@ from .update_peviitor import UpdatePeViitor
 from .validate_city import validate_city
 
 
-
 class Scraper:
     def __init__(self, company_name, url, logo_url):
         self.company_name = company_name
@@ -46,17 +45,26 @@ class Scraper:
         soup = BeautifulSoup(response.text, 'lxml')
         return soup
 
+
     def get_cookies(self, *args):
         response = requests.head(self.url, headers=self.headers).headers
-        cookies = []
+        cookies = {}
         for arg in args:
-            pattern = '|'.join(arg)
-            match = re.search(f'({pattern})=([^;]+);', str(response))
+            match = re.search(f'({arg})=([^;]+);', str(response))
             if match:
-                cookies.append(match.group(0))
+                cookie_name = match.group(1)
+                cookie_value = match.group(2)
+                cookies[cookie_name] = cookie_value
             else:
                 return None
-        return cookies
+
+        data = {
+            "cookie": "; ".join([f"{name}={value}" for name, value in cookies.items()]),
+            "Content-Type": "application/json",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
+        }
+
+        return data
 
 
     @staticmethod
