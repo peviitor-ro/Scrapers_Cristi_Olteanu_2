@@ -1,5 +1,4 @@
 from src.scrapers import Scraper
-import json
 
 
 class Blankfactor(Scraper):
