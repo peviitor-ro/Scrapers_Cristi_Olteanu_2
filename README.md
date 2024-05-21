@@ -1,5 +1,4 @@
 
-
 **Description**
 
 This project automates the scraping of job postings from various websites and submits them to the Peviitor.ro platform. It leverages Object-Oriented Programming (OOP) principles for code organization and maintainability.
