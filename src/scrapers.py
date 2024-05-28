@@ -71,7 +71,7 @@ class Scraper:
     def get_validated_city(city):
         return validate_city(city)
 
-    def get_jobs_dict(self, job_title, job_link, city, remote='On-site'):
+    def get_jobs_dict(self, job_title, job_link, city, remote='on-site'):
 
         self.jobs_list.append({
             "job_title": job_title,

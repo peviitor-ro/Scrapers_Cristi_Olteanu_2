@@ -7,7 +7,7 @@ class Blankfactor(Scraper):
 
     def get_jobs(self):
         payload = {
-            "appliedFacets": {"locations": ["893948fa336d1000cd34c9b0904c0000", "893948fa336d1000cd5db9fd84360000"]},
+            "appliedFacets": {"locations": ["6be8deca68431009366e3572eea60000", "893948fa336d1000cd5db9fd84360000", "893948fa336d1000cd34c9b0904c0000"]},
             "limit": 20,
             "offset": 0,
             "searchText": ""

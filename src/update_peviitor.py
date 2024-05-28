@@ -41,7 +41,6 @@ class UpdatePeViitor:
                                                data=json.dumps(data_jobs))
 
 
-
     def update_logo(self, id_company: str, logo_link: str):
 
         data = json.dumps([{"id": id_company, "logo": logo_link}])
