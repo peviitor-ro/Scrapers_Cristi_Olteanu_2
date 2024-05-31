@@ -17,6 +17,7 @@ class Blankfactor(Scraper):
         response = self.post_json(headers=headers, json=payload)['jobPostings']
 
         for job in response:
+            job_type = 'on-site'
             title = job['title']
             link = f"https://blankfactor.wd12.myworkdayjobs.com/en-US/Blankfactor_External{job['externalPath']}"
             link_info = f"https://blankfactor.wd12.myworkdayjobs.com/wday/cxs/blankfactor/Blankfactor_External{job['externalPath']}"
@@ -35,11 +36,13 @@ class Blankfactor(Scraper):
 
             cities.extend([loc for loc in additional_locations if loc in romanian_cities])
 
+            if first_city_link == 'Remote':
+                job_type = 'remote'
+
             if first_city_link in romanian_cities and first_city != first_city_link:
                 cities.append(first_city_link)
 
-            self.get_jobs_dict(title, link, cities)
-
+            self.get_jobs_dict(title, link, cities, job_type)
         return self.jobs_list
 
 
