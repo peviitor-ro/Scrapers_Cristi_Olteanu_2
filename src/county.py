@@ -243,6 +243,8 @@ def get_county(town_or_towns):
 
     if isinstance(town_or_towns, str):
         # Single town case
+        if len(town_or_towns) == 0:
+            return None
         town = remove_diacritics(town_or_towns)
         county = None
         for county_ in counties:
@@ -260,6 +262,8 @@ def get_county(town_or_towns):
             county = get_county(town)
             if county:
                 counties_list.append(county)
-        return counties_list
-
+        if len(counties_list) > 0:
+            return counties_list
+        else:
+            return None
 
