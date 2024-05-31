@@ -19,15 +19,14 @@ class Stryker(Scraper):
             title = job['title']
             link_job_info = 'https://stryker.wd1.myworkdayjobs.com/wday/cxs/stryker/StrykerCareers' + job['externalPath']
             city = job['locationsText'].split(',')[0]
-            job_type = 'hibrid' if 'hybrid' in str(self.get_json_link(link_job_info)['jobPostingInfo']['jobDescription']).lower() else 'on-site'
+            job_type = 'hybrid' if 'hybrid' in str(self.get_json_link(link_job_info)['jobPostingInfo']['jobDescription']).lower() else 'on-site'
 
-
-            if 'Bucharest' not in city and 'Cluj-Napoca' not in city:
+            if 'locations' in city.lower():
                 additional_locations = self.get_json_link(link_job_info)['jobPostingInfo']['additionalLocations']
 
                 for additional_city in additional_locations:
-                    if 'Romania' in additional_city:
-                        city = additional_city.split(',')[0]
+                    if 'Bucharest' in additional_city:
+                        city = 'Bucuresti'
 
             self.get_jobs_dict(title, link, self.get_validated_city(city), job_type)
 
