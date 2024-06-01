@@ -34,27 +34,29 @@ def publish_validated_jobs(company):
     for job in all_jobs:
         if job['published'] is False:
             unpublished_jobs.append(job)
-    #print('unpublished_jobs ',len(unpublished_jobs))
-    for item in unpublished_jobs:
 
-        title = True if item.get('job_title') else False
+    #print('unpublished_jobs ', len(unpublished_jobs))
+
+    for item in unpublished_jobs:
+        title = item.get('job_title')
         try:
-            link = requests.get(item.get('job_link')).status_code
+            response_text = requests.get(item.get('job_link')).text
         except:
-            link = None
-        link = True if link == 200 else False
+            response_text = None
+
+        pass_title = True if title in response_text else False
 
         cities = item['city']
-        flag_city = True
+        pass_city = True
         for city in cities:
             if get_county(city) is None:
-                flag_city = False
+                pass_city = False
 
-        if title and link and flag_city:
+        if pass_title and pass_city:
             payload_publish.append(item)
 
     if len(payload_publish) > 0:
         response = requests.request("POST", url_publish, data=json.dumps(payload_publish), headers=headers)
         return print(response, response.text)
 
-#publish_validated_jobs('prohuman')
+#publish_validated_jobs('Ceragon')
