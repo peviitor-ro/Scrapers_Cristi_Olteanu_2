@@ -31,11 +31,13 @@ def publish_validated_jobs(company):
 
         page += 1
 
+    print('all_jobs ', len(all_jobs))
+
     for job in all_jobs:
         if job['published'] is False:
             unpublished_jobs.append(job)
 
-    #print('unpublished_jobs ', len(unpublished_jobs))
+    print('unpublished_jobs ', len(unpublished_jobs))
 
     for item in unpublished_jobs:
         title = item.get('job_title')
@@ -44,7 +46,13 @@ def publish_validated_jobs(company):
         except:
             response_text = None
 
-        pass_title = True if title in response_text else False
+        if response_text is not None:
+            pass_title = True if title in response_text else False
+        else:
+            pass_title = False
+
+        if pass_title is False:
+            print(title, ' pass title fail')
 
         cities = item['city']
         pass_city = True
@@ -55,8 +63,10 @@ def publish_validated_jobs(company):
         if pass_title and pass_city:
             payload_publish.append(item)
 
+    print('payload_publish ', len(payload_publish))
+
     if len(payload_publish) > 0:
         response = requests.request("POST", url_publish, data=json.dumps(payload_publish), headers=headers)
         return print(response, response.text)
 
-#publish_validated_jobs('Ceragon')
+publish_validated_jobs('plasticomnium')
