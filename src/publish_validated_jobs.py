@@ -51,9 +51,6 @@ def publish_validated_jobs(company):
         else:
             pass_title = False
 
-        if pass_title is False:
-            print(title, ' pass title fail')
-
         cities = item['city']
         pass_city = True
         for city in cities:
@@ -69,4 +66,4 @@ def publish_validated_jobs(company):
         response = requests.request("POST", url_publish, data=json.dumps(payload_publish), headers=headers)
         return print(response, response.text)
 
-publish_validated_jobs('plasticomnium')
+#publish_validated_jobs('garrett')
