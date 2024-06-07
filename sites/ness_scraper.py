@@ -1,4 +1,5 @@
 from src.scrapers import Scraper
+import requests
 
 
 class Ness(Scraper):
