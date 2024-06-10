@@ -31,7 +31,7 @@ class Prysmian(Scraper):
                     job_type = 'on-site'
 
                 self.get_jobs_dict(title, link, 'Slatina', job_type)
-        print(len(self.jobs_list))
+
         return self.jobs_list
 
 
