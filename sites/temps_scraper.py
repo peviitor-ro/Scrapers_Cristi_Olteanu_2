@@ -5,7 +5,6 @@ class Temps(Scraper):
     def __init__(self, company_name, url, logo_url):
         super().__init__(company_name, url, logo_url)
 
-
     def get_jobs(self):
         response = self.get_soup()
         jobs = response.find_all('li', class_='media')
@@ -16,7 +15,7 @@ class Temps(Scraper):
             if link_text is not None:
                 link = 'https://www.careers-page.com' + link_text
                 title = str(job.find('h5')).split('\n')[1].strip()
-                city = self.get_validated_city(str(job.find('span',attrs={'style': 'margin-right: 10px;'})
+                city = self.get_validated_city(str(job.find('span', attrs={'style': 'margin-right: 10px;'})
                                                    ).split('i>')[1].split(',')[0].strip())
                 self.get_jobs_dict(title, link, city)
 
