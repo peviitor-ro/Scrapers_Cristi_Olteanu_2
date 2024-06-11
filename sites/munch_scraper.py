@@ -26,7 +26,7 @@ class MunchScraper(Scraper):
                 city = ''
 
             if 'Hybrid' in info_job:
-                job_type = 'hibrid'
+                job_type = 'hybrid'
             elif 'Remote' in info_job and 'Hybrid' not in info_job:
                 job_type = 'Remote'
             else:
