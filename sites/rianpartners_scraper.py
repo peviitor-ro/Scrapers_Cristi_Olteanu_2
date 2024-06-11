@@ -18,7 +18,7 @@ class Rian(Scraper):
                 city = job.find('td', class_='location').text.split(',')[0].split('/')
 
                 for i in range(len(city)):
-                    city[i] = self.get_validated_city(str(city[i].strip()).lower().capitalize())
+                    city[i] = self.get_validated_city(str(city[i].strip()).lower())
 
                 self.get_jobs_dict(title, link, city)
 
