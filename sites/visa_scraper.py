@@ -12,7 +12,7 @@ class Visa(Scraper):
 
         for job in response:
             title = job['jobTitle']
-            link = 'https://usa.visa.com/en_us/jobs/' + job['refNumber']
+            link = 'https://corporate.visa.com/en/jobs/' + job['refNumber']
 
             self.get_jobs_dict(title, link, 'Bucuresti')
 
