@@ -252,8 +252,9 @@ def get_county(town_or_towns):
                 if town in value[0]:
                     county = key
                     break
-                # if town in value:
-                #     county = key
+                else:
+                    if town in value:
+                        county = key
         return county
     else:
         # List of towns case
