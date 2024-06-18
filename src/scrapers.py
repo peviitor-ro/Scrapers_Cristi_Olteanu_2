@@ -7,7 +7,7 @@ from .validate_city import validate_city
 
 
 class Scraper:
-    def __init__(self, company_name, url, logo_url):
+    def __init__(self, company_name, url, logo_url=None):
         self.company_name = company_name
         self.url = url
         self.logo_url = logo_url
