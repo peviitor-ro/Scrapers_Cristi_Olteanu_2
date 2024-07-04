@@ -1,5 +1,6 @@
 from src.scrapers import Scraper
 
+
 class Vevohub(Scraper):
     def __init__(self, company_name, url, logo_url):
         super().__init__(company_name, url, logo_url)
@@ -11,13 +12,11 @@ class Vevohub(Scraper):
         for job in jobs:
             title = job.find('h3', class_='elementor-flip-box__layer__title').text.strip()
             link = job.find('a', class_='elementor-flip-box__button elementor-button elementor-size-md')['href']
-            self.get_jobs_dict(title,link,city='Bucuresti')
-        print(self.jobs_list)
-
+            self.get_jobs_dict(title, link, city='Bucuresti')
 
 
 vevohub = Vevohub(
-    company_name= 'vevohub',
+    company_name='vevohub',
     url='https://vevohub.com/careers/',
     logo_url=''
 
