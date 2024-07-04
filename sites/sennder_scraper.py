@@ -1,4 +1,5 @@
 from src.scrapers import Scraper
+import re
 
 
 class Sennder(Scraper):
@@ -7,14 +8,17 @@ class Sennder(Scraper):
 
     def get_jobs(self):
         response = self.get_soup()
-        jobs = response.find_all('li', class_="mb-8")
+        jobs = response.find_all('a')
 
         for job in jobs:
-            title = job.find('div', class_="text-subsection-title mb-2 text-foreground-primary").text
-            link = 'https://www.sennder.com/open-positions' + job.find('a')['href']
-            city = self.get_validated_city(job.find('span', class_="text-foreground-secondary").text.split(',')[0])
+            match = re.search(r"/open-positions/\d{10}-.+", job.get('href'))
 
-            self.get_jobs_dict(title, link, city)
+            if match:
+                link = 'https://www.sennder.com/' + match.group()
+                title = job.find('div', class_="text-subsection-title mb-2 text-foreground-primary").text
+                city = self.get_validated_city(job.find('span', class_="text-foreground-secondary").text.split(',')[0])
+
+                self.get_jobs_dict(title, link, city)
 
         return self.jobs_list
 
