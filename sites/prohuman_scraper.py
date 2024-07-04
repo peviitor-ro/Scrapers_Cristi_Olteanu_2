@@ -13,9 +13,10 @@ class Prohuman(Scraper):
         for job in response:
             title = job['title']
             link = 'https://www.prohuman.ro/candidati/jobs/' + job['slug']
-            cities = [city['location'] for city in job['jobs_job_locations']]
+            cities = [city['location'] for city in job['jobs_job_locations'] if get_county(city['location']) is not None]
 
-            self.get_jobs_dict(title, link, cities)
+            if len(cities) > 0:
+                self.get_jobs_dict(title, link, cities)
 
         return self.jobs_list
 
