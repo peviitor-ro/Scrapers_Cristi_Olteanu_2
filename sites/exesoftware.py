@@ -1,6 +1,7 @@
 from src.scrapers import Scraper
 
-class exeSoftware(Scraper):
+
+class ExeSoftware(Scraper):
     def __init__(self, company_name, url, logo_url):
         super().__init__(company_name, url, logo_url)
 
@@ -22,17 +23,15 @@ class exeSoftware(Scraper):
 
                     if valid:
 
-                        remote = 'remote' if 'remote' in job.find('span', class_='pill px-10 py-5 black mr-15 mb-15').text.lower() else 'on-site'
+                        remote = 'remote' if ('remote' in job.find('span', class_='pill px-10 py-5 black mr-15 mb-15')
+                                              .text.lower()) else 'on-site'
 
                         self.get_jobs_dict(title, link, 'Bucuresti', remote)
-
-        print(len(self.jobs_list), self.jobs_list)
 
         return self.jobs_list
 
 
-
-exesoftware = exeSoftware(
+exesoftware = ExeSoftware(
     company_name= 'exesoftware',
     url='https://www.exesoftware.ro/about/careers',
     logo_url= 'https://www.exesoftware.ro/wp-content/uploads/2022/02/logo-blue.png'
