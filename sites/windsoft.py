@@ -1,5 +1,6 @@
 from src.scrapers import Scraper
 
+
 class Windsoft(Scraper):
     def __init__(self, company_name, url, logo_url):
         super().__init__(company_name, url, logo_url)
@@ -13,10 +14,6 @@ class Windsoft(Scraper):
             link = 'https://www.windsoft.ro' + job.find('a').get('href')
             city = job.find('div', class_='career_location').text.capitalize()
             self.get_jobs_dict(title, link, city)
-        print(self.jobs_list)
-
-
-
 
 
 windsoft = Windsoft(
@@ -25,3 +22,4 @@ windsoft = Windsoft(
     logo_url=''
 )
 windsoft.get_jobs()
+windsoft.push_peviitor()
