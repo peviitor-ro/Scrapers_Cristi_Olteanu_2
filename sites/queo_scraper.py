@@ -28,6 +28,4 @@ queo = Queo(
     url='https://www.queo.de/en/job/jobs.json',
     logo_url='https://asset.brandfetch.io/idUTj3lM0G/idE6RnDF2s.jpeg?updated=1709731691741'
 )
-print(queo.get_jobs())
-
-#queo.push_peviitor()
+queo.push_peviitor()
