@@ -1,5 +1,6 @@
 from src.scrapers import Scraper
 
+
 class Interratravel(Scraper):
     def __init__(self, company_name, url, logo_url):
         super().__init__(company_name, url, logo_url)
@@ -11,9 +12,6 @@ class Interratravel(Scraper):
             title = job.find('h2').text
             link = job.find('a')['href']
             self.get_jobs_dict(title,link,'Bucuresti')
-        print(self.jobs_list)
-
-
 
 
 interratravel = Interratravel(
@@ -22,3 +20,4 @@ interratravel = Interratravel(
     logo_url=''
 )
 interratravel.get_jobs()
+interratravel.push_peviitor()
