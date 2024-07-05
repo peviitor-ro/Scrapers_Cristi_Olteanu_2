@@ -13,6 +13,7 @@ class Windsoft(Scraper):
             title = job.find('div', class_='career_name blue').text
             link = 'https://www.windsoft.ro' + job.find('a').get('href')
             city = job.find('div', class_='career_location').text.capitalize()
+
             self.get_jobs_dict(title, link, city)
 
 
