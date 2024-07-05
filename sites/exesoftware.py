@@ -32,9 +32,9 @@ class ExeSoftware(Scraper):
 
 
 exesoftware = ExeSoftware(
-    company_name= 'exesoftware',
+    company_name='exesoftware',
     url='https://www.exesoftware.ro/about/careers',
-    logo_url= 'https://www.exesoftware.ro/wp-content/uploads/2022/02/logo-blue.png'
+    logo_url='https://www.exesoftware.ro/wp-content/uploads/2022/02/logo-blue.png'
 )
 exesoftware.get_jobs()
 exesoftware.push_peviitor()
