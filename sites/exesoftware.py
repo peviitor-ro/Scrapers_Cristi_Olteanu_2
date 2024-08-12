@@ -35,4 +35,4 @@ exesoftware = ExeSoftware(
     logo_url='https://www.exesoftware.ro/wp-content/uploads/2022/02/logo-blue.png'
 )
 exesoftware.get_jobs()
-#exesoftware.push_peviitor()
+exesoftware.push_peviitor()
