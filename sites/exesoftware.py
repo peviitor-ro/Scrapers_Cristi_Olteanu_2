@@ -1,3 +1,5 @@
+import requests
+
 from src.scrapers import Scraper
 
 
@@ -14,17 +16,13 @@ class ExeSoftware(Scraper):
 
             if info_link:
                 link = info_link.get('href') if 'jobs' in info_link.get('href') else None
+
                 if link:
                     title = job.find('h5').text
-                    try:
-                        valid = self.get_link_soup(link).find('div', class_='uncode_text_column').find('h1')
-                    except:
-                        valid = None
 
-                    if valid:
-
-                        remote = 'remote' if ('remote' in job.find('span', class_='pill px-10 py-5 black mr-15 mb-15')
-                                              .text.lower()) else 'on-site'
+                    if requests.get(link).status_code == 200:
+                        text = job.find('div', class_='wpb_raw_code wpb_raw_html').text.lower().strip()
+                        remote = 'remote' if 'remote' in text else 'on-site'
 
                         self.get_jobs_dict(title, link, 'Bucuresti', remote)
 
@@ -37,4 +35,4 @@ exesoftware = ExeSoftware(
     logo_url='https://www.exesoftware.ro/wp-content/uploads/2022/02/logo-blue.png'
 )
 exesoftware.get_jobs()
-exesoftware.push_peviitor()
+#exesoftware.push_peviitor()
