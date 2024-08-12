@@ -1,3 +1,5 @@
+import requests
+
 from src.scrapers import Scraper
 
 
@@ -39,22 +41,20 @@ class WaveStone(Scraper):
             "method": "POST",
             "path": "/widget-api/job-list/jobAds/",
             "scheme": "https",
-            "Accept": "*/*",
-            "Accept-Encoding": "gzip, deflate, br, zstd",
-            "Accept-Language": "ro-RO,ro;q=0.9,en-US;q=0.8,en;q=0.7",
-            "Content-Type": "application/json",
-            "Origin": "https://romania-career.wavestone.com",
-            "Priority": "u=1, i",
-            "Referer": "https://romania-career.wavestone.com/",
-            "Sec-Ch-Ua": "\"Not/A)Brand\";v=\"8\", \"Chromium\";v=\"126\", \"Google Chrome\";v=\"126\"",
-            "Sec-Ch-Ua-Mobile": "?1",
-            "Sec-Ch-Ua-Platform": "\"Android\"",
-            "Sec-Fetch-Dest": "empty",
-            "Sec-Fetch-Mode": "cors",
-            "Sec-Fetch-Site": "cross-site",
-            "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36"
-
+            "accept": "*/*",
+            "content-type": "application/json",
+            "origin": "https://romania-career.wavestone.com",
+            "priority": "u=1, i",
+            "referer": "https://romania-career.wavestone.com/",
+            "sec-ch-ua": '"Not)A;Brand";v="99", "Google Chrome";v="127", "Chromium";v="127"',
+            "sec-ch-ua-mobile": "?1",
+            "sec-ch-ua-platform": '"Android"',
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "user-agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Mobile Safari/537.36"
         }
+
         jobs = self.post_json(json=payload, headers=headers)['data']['jobs']
 
         for job in jobs:
