@@ -7,7 +7,7 @@ import time
 class UpdatePeViitor:
 
     def __init__(self):
-        self.post_url = 'https://api.peviitor.ro/v5/add/'
+        self.post_url = 'https://api.laurentiumarian.ro/jobs/add/'
         self.logo_url = 'https://api.peviitor.ro/v1/logo/add/'
 
         self.post_header = {
@@ -27,7 +27,6 @@ class UpdatePeViitor:
         token = requests.post(token_endpoint, json={
             "email": 'cristiolteanu1892@gmail.com'
         })
-
         return token.json()['access']
 
 
@@ -36,13 +35,14 @@ class UpdatePeViitor:
         # time sleep for SOLR indexing
         time.sleep(0.2)
 
-        requests.post(self.post_url, headers=self.post_header, data=json.dumps(data_jobs))
+        res = requests.post(self.post_url, headers=self.post_header, data=json.dumps(data_jobs))
+        print(res.status_code)
         print(json.dumps(data_jobs, indent=4))
 
     def update_logo(self, id_company: str, logo_link: str):
 
         data = json.dumps([{"id": id_company, "logo": logo_link}])
-        requests.post(self.logo_url, headers=self.logo_header, data=data)
+        #print(requests.post(self.logo_url, headers=self.logo_header, data=data))
 
 
 
