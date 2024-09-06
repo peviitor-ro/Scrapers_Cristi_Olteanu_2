@@ -17,7 +17,6 @@ class Prohuman(Scraper):
 
             if len(cities) > 0:
                 self.get_jobs_dict(title, link, cities)
-
         return self.jobs_list
 
 prohuman = Prohuman(
