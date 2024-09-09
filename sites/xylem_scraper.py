@@ -1,5 +1,3 @@
-from numpy.core.defchararray import title
-
 from src.scrapers import Scraper
 
 
