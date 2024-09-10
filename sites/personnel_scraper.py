@@ -20,12 +20,12 @@ class Personnel(Scraper):
         return self.jobs_list
 
 
-
 personnel = Personnel(
-    company_name= 'Personnel',
-    url= 'https://personnel.com.ro/job/',
-    logo_url= 'https://personnel.com.ro/wp-content/uploads/2018/08/personnel_logo-site.png'
+    company_name='Personnel',
+    url='https://personnel.com.ro/posturi-disponibile/',
+    logo_url='https://personnel.com.ro/wp-content/uploads/2018/08/personnel_logo-site.png'
 )
 personnel.get_jobs()
 personnel.push_peviitor()
+
 
