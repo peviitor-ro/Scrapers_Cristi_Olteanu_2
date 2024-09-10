@@ -13,10 +13,11 @@ class Veridion(Scraper):
             title = job.find('h2', class_='fw-bold').text.strip()
             link = job.find('a', class_='d-inline-block w-100 careers-apply transition-ltr-white-black text-decoration-none')['href']
             location_info = job.find('h5', class_='light-grey').text.strip()
-            city = 'Bucuresti' if 'Bucharest' in location_info else ''
+            city = 'Bucuresti' if 'Bucharest' in location_info else None
             job_type = 'hybrid' if 'hybrid' in location_info else 'on-site'
 
-            self.get_jobs_dict(title, link, city, job_type)
+            if city:
+                self.get_jobs_dict(title, link, city, job_type, county='Bucuresti')
 
         return self.jobs_list
 
