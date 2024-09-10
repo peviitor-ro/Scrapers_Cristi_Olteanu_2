@@ -17,8 +17,9 @@ class Rws(Scraper):
                 part_title = text['title'].split("-")
                 title = str(''.join(part_title[1:])).strip()
                 link = text['href']
+                job_type = 'remote' if 'remote' in self.get_link_soup(link).find('div', class_='col-xs-6 header left').text.strip().lower() else 'on-site'
 
-                self.get_jobs_dict(title, link, 'Cluj-Napoca')
+                self.get_jobs_dict(title, link, 'Cluj-Napoca', job_type)
 
         return self.jobs_list
 
