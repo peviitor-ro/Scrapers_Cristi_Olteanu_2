@@ -12,7 +12,7 @@ class Interratravel(Scraper):
             title = job.find('h2').text
             link = job.find('a')['href']
 
-            self.get_jobs_dict(title,link,'Bucuresti')
+            self.get_jobs_dict(title, link, 'Bucuresti')
 
 
 interratravel = Interratravel(
