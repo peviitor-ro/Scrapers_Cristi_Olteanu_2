@@ -24,13 +24,10 @@ class Prysmian(Scraper):
             for job in jobs:
                 title = job['title']
                 link = 'https://prysmiangroup.wd3.myworkdayjobs.com/en-US/Careers' + job['externalPath']
-                try:
-                    if 'Hybrid' in job['remoteType']:
-                        job_type = 'hybrid'
-                except:
-                    job_type = 'on-site'
+                base_job_type = job.get('remoteType')
+                job_type = 'hybrid' if base_job_type is not None and 'hybrid' in base_job_type.lower() else 'on-site'
 
-                self.get_jobs_dict(title, link, 'Slatina', job_type)
+                self.get_jobs_dict(title, link, 'Slatina', job_type, 'Olt')
 
         return self.jobs_list
 
@@ -42,3 +39,4 @@ prysmian = Prysmian(
 )
 prysmian.get_jobs()
 prysmian.push_peviitor()
+
