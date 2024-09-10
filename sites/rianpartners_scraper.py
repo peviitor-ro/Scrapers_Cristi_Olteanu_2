@@ -13,14 +13,13 @@ class Rian(Scraper):
         for job in jobs:
             info = job.find('td')
             if info is not None:
-                title = job.find('td').text
+                title = job.find('td').text.title()
                 link = job.find('a')['href']
-                city = job.find('td', class_='location').text.split(',')[0].split('/')
+                base_location = job.find('td', class_='location').text
+                city = base_location.split(',')[0].title()
+                county = base_location.split(',')[-1].title().strip('County').strip() if 'county' in base_location.lower() else None
 
-                for i in range(len(city)):
-                    city[i] = self.get_validated_city(str(city[i].strip()).lower())
-
-                self.get_jobs_dict(title, link, city)
+                self.get_jobs_dict(title, link, city, county=county)
 
         return self.jobs_list
 
@@ -32,3 +31,4 @@ rian = Rian(
 )
 rian.get_jobs()
 rian.push_peviitor()
+
