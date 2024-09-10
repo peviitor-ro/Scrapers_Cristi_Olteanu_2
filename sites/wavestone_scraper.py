@@ -60,7 +60,7 @@ class WaveStone(Scraper):
         for job in jobs:
             title = job['title']
             link = 'https://romania-career.wavestone.com' + job['link']
-            self.get_jobs_dict(title, link, 'Cluj-Napoca', 'hybrid')
+            self.get_jobs_dict(title, link, 'Cluj-Napoca', 'hybrid', 'Cluj')
 
         return self.jobs_list
 
