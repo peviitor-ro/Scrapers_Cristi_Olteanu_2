@@ -12,7 +12,7 @@ class Vevohub(Scraper):
         for job in jobs:
             title = job.find('h3', class_='elementor-flip-box__layer__title').text.strip()
             link = job.find('a', class_='elementor-flip-box__button elementor-button elementor-size-md')['href']
-            self.get_jobs_dict(title, link, city='Bucuresti')
+            self.get_jobs_dict(title, link, city='Bucuresti', county='Bucuresti')
 
 
 vevohub = Vevohub(
