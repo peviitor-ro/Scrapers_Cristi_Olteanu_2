@@ -32,8 +32,9 @@ class Scraper:
         response = requests.get(url=link, headers=self.headers).json()
         return response
 
-    def get_json(self, json=None, data=None, params=None):
-        response = requests.get(self.url, headers=self.headers, json=json, data=data, params=params).json()
+    def get_json(self, json=None, data=None, params=None, headers=None):
+        headers = self.headers if headers is None else headers
+        response = requests.get(self.url, headers=headers, json=json, data=data, params=params).json()
         return response
 
     def post_json(self, headers=None, json=None, data=None, params=None):
