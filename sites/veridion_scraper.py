@@ -2,8 +2,6 @@ from src.scrapers import Scraper
 
 
 class Veridion(Scraper):
-    def __init__(self, company_name, url, logo_url):
-        super().__init__(company_name, url, logo_url)
 
     def get_jobs(self):
         response = self.get_soup()
@@ -18,7 +16,6 @@ class Veridion(Scraper):
 
             if city:
                 self.get_jobs_dict(title, link, city, job_type, county='Bucuresti')
-
         return self.jobs_list
 
 veridion = Veridion(
@@ -28,3 +25,4 @@ veridion = Veridion(
 )
 veridion.get_jobs()
 veridion.push_peviitor()
+
