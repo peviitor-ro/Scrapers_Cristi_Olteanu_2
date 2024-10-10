@@ -2,8 +2,6 @@ from src.scrapers import Scraper
 
 
 class Rws(Scraper):
-    def __init__(self, company_name, url, logo_url):
-        super().__init__(company_name, url, logo_url)
 
     def get_jobs(self):
         querystring = {"ss": "1", "in_iframe": "1", "searchLocation": "13526--"}
