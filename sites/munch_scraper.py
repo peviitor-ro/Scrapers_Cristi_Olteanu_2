@@ -3,11 +3,7 @@ from src.scrapers import Scraper
 
 class MunchScraper(Scraper):
 
-    def __init__(self, company_name, url, logo_url):
-        super().__init__(company_name, url, logo_url)
-
     def get_jobs(self):
-
         response = self.get_soup(params={"split_view":"false","geobound_coordinates[top_left_lat]":"44.427807765515226","geobound_coordinates[top_left_lon]":"26.098462343215942","geobound_coordinates[bottom_right_lat]":"44.425723714377156","geobound_coordinates[bottom_right_lon]":"26.106610894203186","query":""})
         jobs = response.find_all('li', class_='w-full')
 
