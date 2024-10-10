@@ -1,10 +1,7 @@
 from src.scrapers import Scraper
-import requests
 
 
 class Ness(Scraper):
-    def __init__(self, company_name, url, logo_url):
-        super().__init__(company_name, url, logo_url)
 
     def get_jobs(self):
         page = 1
