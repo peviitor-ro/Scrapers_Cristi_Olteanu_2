@@ -2,9 +2,6 @@ from src.scrapers import Scraper
 
 
 class GlobalStep(Scraper):
-    def __init__(self, company_name, url, logo_url):
-        super().__init__(company_name, url, logo_url)
-
 
     def get_jobs(self):
         response = self.post_html(data='jq=&awsm_job_spec%5Bjob-category%5D=&awsm_job_spec%5Bjob-location%5D=77&lang=en&action=jobfilter&listings_per_page=20',
