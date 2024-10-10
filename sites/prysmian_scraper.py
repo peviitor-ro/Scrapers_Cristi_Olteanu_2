@@ -2,8 +2,6 @@ from src.scrapers import Scraper
 
 
 class Prysmian(Scraper):
-    def __init__(self, company_name, url, logo_url):
-        super().__init__(company_name, url, logo_url)
 
     def get_response(self, offset):
         headers = self.get_cookies('wd-browser-id', 'PLAY_SESSION', '__cf_bm', '__cflb', '_cfuvid')
