@@ -2,8 +2,6 @@ from src.scrapers import Scraper
 
 
 class Blankfactor(Scraper):
-    def __init__(self, company_name, url, logo_url):
-        super().__init__(company_name, url, logo_url)
 
     def get_jobs(self):
         payload = {
@@ -13,7 +11,6 @@ class Blankfactor(Scraper):
             "searchText": ""
         }
         headers = self.get_cookies('wd-browser-id', 'PLAY_SESSION', ' vps-cke', 'WorkdayLB_UI_Apache')
-
         response = self.post_json(headers=headers, json=payload)['jobPostings']
 
         for job in response:
@@ -43,6 +40,7 @@ class Blankfactor(Scraper):
                 cities.append(first_city_link)
 
             self.get_jobs_dict(title, link, cities, job_type)
+
         return self.jobs_list
 
 
