@@ -4,7 +4,7 @@ from src.scrapers import Scraper
 
 
 class ExeSoftware(Scraper):
-    
+
     def get_jobs(self):
         response = self.get_soup()
         jobs = response.find_all('div', class_='uncont')
