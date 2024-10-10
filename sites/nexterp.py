@@ -2,8 +2,6 @@ from src.scrapers import Scraper
 
 
 class Nexterp(Scraper):
-    def __init__(self, company_name, url, logo_url):
-        super().__init__(company_name, url, logo_url)
 
     def get_jobs(self):
         jobs = self.get_soup().find_all('a', class_='text-decoration-none')
@@ -14,7 +12,6 @@ class Nexterp(Scraper):
             self.get_jobs_dict(title,link,city)
     
         return self.jobs_list
-
 
 
 nexterp = Nexterp(
