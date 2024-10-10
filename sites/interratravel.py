@@ -2,8 +2,6 @@ from src.scrapers import Scraper
 
 
 class Interratravel(Scraper):
-    def __init__(self, company_name, url, logo_url):
-        super().__init__(company_name, url, logo_url)
 
     def get_jobs(self):
         jobs = self.get_soup().find_all('div', class_='col-md-7 col-lg-8 align-self-center')
