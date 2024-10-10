@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from bs4 import BeautifulSoup
 import requests
 from .county import get_county
@@ -6,7 +7,7 @@ from .update_peviitor import UpdatePeViitor
 from .validate_city import validate_city
 
 
-class Scraper:
+class Scraper(ABC):
     def __init__(self, company_name, url, logo_url=None):
         self.company_name = company_name
         self.url = url
@@ -17,6 +18,10 @@ class Scraper:
             'Refer': 'https://google.com',
             'DNT': '1'
         }
+
+    @abstractmethod
+    def get_jobs(self):
+        pass
 
     def get_soup(self, params=None):
         response = requests.get(self.url, headers=self.headers, params=params)
