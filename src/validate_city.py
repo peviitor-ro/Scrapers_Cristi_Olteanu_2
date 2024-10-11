@@ -5,8 +5,9 @@ def validate_city(city):
         {'Cluj-Napoca': ['cluj napoca', 'cluj']},
         {'Bolintin-Deal': ['bolintin-deal', 'bolintin - deal']},
         {'Campulung': ['campulung muscel', 'campulung Muscel']},
-        {'Poiana Lacului': ['poiana lacului']}
-
+        {'Poiana Lacului': ['poiana lacului']},
+        {'Targu-Mures': ['tg. mures']},
+        {'Slatina': ['slatina - olt']}
     ]
 
     for item in validated_cities:
