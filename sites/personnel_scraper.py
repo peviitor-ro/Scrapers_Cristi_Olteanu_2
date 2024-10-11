@@ -1,26 +1,37 @@
 from src.scrapers import Scraper
-import re
+from src.validate_city import validate_city
 
 
 class Personnel(Scraper):
 
     def get_jobs(self):
-        response = self.get_soup()
-        jobs = response.find_all('div', class_='list-data')
+        page = 1
+        flag = True
 
-        for job in jobs:
-            link = job.find('a')['href']
-            title = job.find('span', class_='job-title').text
-            city = re.split(r"(?<=,) \s+|/", job.find('div', class_='job-location').text)
+        while flag:
 
-            self.get_jobs_dict(title, link, city)
+            response = self.get_link_soup(f'https://personnel.com.ro/posturi-disponibile/?page={page}%2F')
+            jobs = response.find_all('div', class_='list-data')
+
+            if len(jobs) > 0:
+
+                for job in jobs:
+                    link = job.find('a')['href']
+                    title = job.find('span', class_='job-title').text
+                    city = job.find('div', class_='job-location').text.split(',')
+                    city = [validate_city(c.strip()) for c in city if c.strip() != 'Ilfov']
+
+                    self.get_jobs_dict(title, link, city)
+                page += 1
+            else:
+                flag = False
 
         return self.jobs_list
 
 
 personnel = Personnel(
     company_name='Personnel',
-    url='https://personnel.com.ro/posturi-disponibile/',
+    url='https://personnel.com.ro/posturi-disponibile/?page=4%2F',
     logo_url='https://personnel.com.ro/wp-content/uploads/2018/08/personnel_logo-site.png'
 )
 personnel.get_jobs()
