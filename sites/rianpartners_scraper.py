@@ -5,20 +5,23 @@ from src.scrapers import Scraper
 class Rian(Scraper):
 
     def get_jobs(self):
-        response = self.get_soup()
-        jobs = response.find_all('tr')
+        urls = ['https://rian-partners.com/en/rian-partners-jobs-pitesti-jobs-in-production/',
+                'https://rian-partners.com/en/careers/']
+        for url in urls:
+            response = self.get_link_soup(url)
+            jobs = response.find_all('tr')
 
-        for job in jobs:
-            info = job.find('td')
-            if info is not None:
-                title = job.find('td').text.title()
-                link = job.find('a')['href']
-                base_location = job.find('td', class_='location').text
-                city = base_location.split(',')[0].title()
-                county = base_location.split(',')[-1].title().strip('County').strip() if 'county' in base_location.lower() else None
+            for job in jobs:
+                info = job.find('td')
+                if info is not None:
+                    title = job.find('td').text.title()
+                    link = job.find('a')['href']
+                    base_location = job.find('td', class_='location').text
+                    city = base_location.split(',')[0].title()
+                    county = base_location.split(',')[-1].title().strip('County').strip() if 'county' in base_location.lower() else None
 
-                self.get_jobs_dict(title, link, city, county=county)
-
+                    self.get_jobs_dict(title, link, city, county=county)
+        print(len(self.jobs_list))
         return self.jobs_list
 
 rian = Rian(
