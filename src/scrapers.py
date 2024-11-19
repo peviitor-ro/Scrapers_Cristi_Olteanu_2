@@ -23,13 +23,15 @@ class Scraper(ABC):
     def get_jobs(self):
         pass
 
-    def get_soup(self, params=None):
-        response = requests.get(self.url, headers=self.headers, params=params)
+    def get_soup(self, params=None, headers=None):
+        headers = self.headers if headers is None else headers
+        response = requests.get(self.url, headers=headers, params=params)
         soup = BeautifulSoup(response.text, 'lxml')
         return soup
 
-    def get_link_soup(self, link):
-        response = requests.get(url=link, headers=self.headers)
+    def get_link_soup(self, link, params=None, headers=None):
+        headers = self.headers if headers is None else headers
+        response = requests.get(url=link, headers=headers, params=params)
         soup = BeautifulSoup(response.text, 'lxml')
         return soup
 
