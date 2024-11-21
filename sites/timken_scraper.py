@@ -11,9 +11,11 @@ class Timken(Scraper):
         for job in jobs:
             title = job.find('a', class_='jobTitle-link').text
             link = 'https://careers.timken.com/job.find' + job.find('a', class_='jobTitle-link')['href']
+            country = job.find('span', class_='jobLocation').text.split(', ')[-2]
             city = job.find('span', class_='jobLocation').text.split()[0].strip(',')
 
-            self.get_jobs_dict(title, link, city)
+            if 'RO' in country:
+                self.get_jobs_dict(title, link, city)
 
         return self.jobs_list
 
