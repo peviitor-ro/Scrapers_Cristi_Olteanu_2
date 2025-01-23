@@ -9,8 +9,8 @@ class Nexterp(Scraper):
             link = "https://www.nexterp.ro" + job.get('href')
             title = job.find('h3').text.strip()
             city = self.get_link_soup(link).find('div', class_='d-flex align-items-baseline').text.split(',')[0].strip()
-            self.get_jobs_dict(title,link,city)
-    
+            self.get_jobs_dict(title, link, city)
+
         return self.jobs_list
 
 
