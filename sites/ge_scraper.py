@@ -8,27 +8,27 @@ class GeneralElectric(Scraper):
         headers = self.get_cookies('PLAY_SESSION', 'PHPPPE_ACT')
 
         payload = {
-            "lang": "en_global",
-            "deviceType": "desktop",
-            "country": "global",
-            "pageName": "search-results",
-            "ddoKey": "refineSearch",
             "sortBy": "",
             "subsearch": "",
             "from": 0,
             "jobs": True,
             "counts": True,
-            "all_fields": ["business", "category", "jobFamilies", "country", "state", "city", "checkRemote", "experienceLevel"],
-            "size": 20,
+            "all_fields": ["category", "jobFamilies", "country", "state", "city", "checkRemote", "experienceLevel"],
+            "pageName": "search-results",
+            "size": 10,
             "clearAll": False,
             "jdsource": "facets",
             "isSliderEnable": False,
-            "pageId": "page1261",
-            "siteType": "",
+            "pageId": "page20",
+            "siteType": "external",
             "keywords": "",
             "global": True,
             "selected_fields": {"country": ["Romania"]},
-            "locationData": {}
+            "lang": "en_global",
+            "deviceType": "mobile",
+            "country": "global",
+            "refNum": "GAOGAYGLOBAL",
+            "ddoKey": "refineSearch"
         }
         jobs = self.post_json(json=payload, headers=headers)['refineSearch']['data']['jobs']
 
@@ -41,7 +41,7 @@ class GeneralElectric(Scraper):
         return self.jobs_list
 
 ge = GeneralElectric(
-    url='https://jobs.gecareers.com/aviation/widgets',
+    url='https://careers.geaerospace.com/widgets',
     company_name='ge',
     logo_url=''
 )
