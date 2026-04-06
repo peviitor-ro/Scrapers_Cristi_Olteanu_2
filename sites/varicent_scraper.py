@@ -4,32 +4,34 @@ from src.scrapers import Scraper
 class VaricentScraper(Scraper):
 
     def get_jobs(self):
-
-        jobs = self.get_soup().find_all('div', class_='posting')
+        jobs = self.get_json(params={'content': 'true'})['jobs']
 
         for job in jobs:
-            title = job.find('h5', attrs={'data-qa': 'posting-name'}).text
-            info = job.find('span', attrs={'class': 'display-inline-block small-category-label workplaceTypes'}).text
-            link = job.find('a').get('href')
+            location = job.get('location', {}).get('name', '')
 
-            if 'remote' in info.lower():
-                job_type = 'remote'
-            elif 'Hybrid' in info.lower():
-                job_type = 'hybrid'
-            else:
-                job_type = 'on-site'
+            if 'Romania' not in location:
+                continue
 
-            self.get_jobs_dict(title, link, 'Bucuresti', job_type)
+            title = job['title'].strip()
+            link = job['absolute_url']
+            city = self.get_validated_city(location.split(',')[0].strip())
+            metadata = job.get('metadata', [])
+            job_type = 'on-site'
+
+            for item in metadata:
+                if item.get('name') == 'Employment Type' and 'remote' in item.get('value', '').lower():
+                    job_type = 'remote'
+                    break
+
+            self.get_jobs_dict(title, link, city, job_type)
 
         return self.jobs_list
 
 
 varicent = VaricentScraper(
     company_name='varicent',
-    url='https://jobs.lever.co/varicent?location=Bucharest',
-    logo_url=''
+    url='https://boards-api.greenhouse.io/v1/boards/varicent/jobs',
+    logo_url='https://www.varicent.com/hubfs/favicon-transparent.png'
 )
 varicent.get_jobs()
 varicent.push_peviitor()
-
-

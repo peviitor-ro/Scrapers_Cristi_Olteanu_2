@@ -5,7 +5,7 @@ class Teva(Scraper):
 
     def get_jobs(self):
 
-        response = self.get_soup()
+        response = self.get_soup(verify=False)
         jobs = response.find_all('tr', class_='data-row')
 
         for job in jobs:

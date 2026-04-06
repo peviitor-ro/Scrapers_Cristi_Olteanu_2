@@ -1,0 +1,8 @@
+/venv
+
+**/__pycache__
+scrapers_forzza/000_delete_api_data.py
+
+/.idea
+/env
+/*.egg-info

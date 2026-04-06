@@ -23,9 +23,9 @@ class Scraper(ABC):
     def get_jobs(self):
         pass
 
-    def get_soup(self, params=None, headers=None):
+    def get_soup(self, params=None, headers=None, **kwargs):
         headers = self.headers if headers is None else headers
-        response = requests.get(self.url, headers=headers, params=params)
+        response = requests.get(self.url, headers=headers, params=params, **kwargs)
         soup = BeautifulSoup(response.text, 'lxml')
         return soup
 

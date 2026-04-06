@@ -6,14 +6,30 @@ class Ascom(Scraper):
     def get_jobs(self):
 
         response = self.get_soup()
-        jobs = response.find_all('li', class_='block-grid-item border border-block-base-text border-opacity-15 min-h-[360px] items-center justify-center rounded overflow-hidden relative z-career-job-card-image')
+        jobs = response.find_all('li', class_='block-grid-item')
 
         for job in jobs:
-            title = job.find('span', class_='text-block-base-link company-link-style')['title']
-            link = job.find('a')['href']
+            title_tag = job.find('span', class_='text-block-base-link')
+            link_tag = job.find('a', href=True)
+
+            if title_tag is None or link_tag is None:
+                continue
+
+            title = title_tag.get('title', title_tag.text.strip())
+            link = link_tag['href']
 
             soup_job_type = self.get_link_soup(link)
-            job_type = soup_job_type.find('dl', class_='md:max-w-[70%] mx-auto text-md gap-y-0 md:gap-y-5 flex flex-wrap flex-col md:flex-row company-links').text.split()[-1]
+            job_details = soup_job_type.find('dl', class_='company-links')
+            job_type = 'on-site'
+
+            if job_details is not None:
+                labels = job_details.find_all('dt')
+                values = job_details.find_all('dd')
+
+                for label, value in zip(labels, values):
+                    if label.text.strip() == 'Remote status':
+                        job_type = value.text.strip().lower()
+                        break
 
             self.get_jobs_dict(title, link, 'Cluj-Napoca', job_type)
 

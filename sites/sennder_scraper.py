@@ -1,30 +1,39 @@
 from src.scrapers import Scraper
-import re
 
 
 class Sennder(Scraper):
 
     def get_jobs(self):
-        response = self.get_soup()
-        jobs = response.find_all('a')
+        payload = {
+            'operationName': 'JobBoardList',
+            'variables': {'boardId': 'senndertechnologies-gmbh'},
+            'query': 'query JobBoardList($boardId: String!) { oatsExternalJobPostings(boardId: $boardId) { jobPostings { extId title locations { city isoCountry isRemote } } } }'
+        }
+        jobs = self.post_json(
+            headers={'User-Agent': self.headers['User-Agent']},
+            json=payload
+        )['data']['oatsExternalJobPostings']['jobPostings']
 
         for job in jobs:
-            match = re.search(r"/open-positions/\d{10}-.+", job.get('href'))
+            locations = job.get('locations') or []
 
-            if match:
-                link = 'https://www.sennder.com/' + match.group()
-                title = job.find('div', class_="text-subsection-title mb-2 text-foreground-primary").text
-                city = self.get_validated_city(job.find('span', class_="text-foreground-secondary").text.split(',')[0])
+            for location in locations:
+                if location.get('isoCountry') != 'ROU':
+                    continue
 
-                self.get_jobs_dict(title, link, city)
+                city = self.get_validated_city(location['city'])
+                link = f"https://jobs.gem.com/senndertechnologies-gmbh/{job['extId']}"
+                remote = 'remote' if location.get('isRemote') else 'on-site'
+
+                self.get_jobs_dict(job['title'].strip(), link, city, remote)
 
         return self.jobs_list
 
 
 sennder = Sennder(
     company_name='sennder',
-    url='https://www.sennder.com/open-positions/departments/all/locations/bucharest-romania',
-    logo_url='https://uploads-ssl.webflow.com/5f0d9d156b2682a4ff0aaa3a/5f100c78742912bf9b8ef246_Logo%20Horizontal_Orange.svg'
+    url='https://jobs.gem.com/api/public/graphql',
+    logo_url='https://a.storyblok.com/f/341309/ce59cf62f1/logo.svg'
 )
 sennder.get_jobs()
 sennder.push_peviitor()
