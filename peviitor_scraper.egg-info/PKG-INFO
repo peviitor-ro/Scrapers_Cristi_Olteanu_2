@@ -1,7 +1,14 @@
-Metadata-Version: 2.1
-Name: peviitor-scraper
+Metadata-Version: 2.4
+Name: peviitor_scraper
 Version: 0.0.1
 Summary: A simple scraper
 Home-page: 
 Author: Peviitor
-Requires-Python: >=3.6
+Requires-Python: >=3.10
+Requires-Dist: beautifulsoup4
+Requires-Dist: lxml
+Requires-Dist: requests
+Dynamic: author
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
