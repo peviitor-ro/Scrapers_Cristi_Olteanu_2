@@ -8,8 +8,8 @@ class Ness(Scraper):
     def get_jobs(self):
         page = 1
         flag = True
-        scraper = cloudscraper.create_scraper(browser={'browser': 'chrome', 'platform': 'darwin', 'mobile': False})
-
+        scraper = cloudscraper.create_scraper()
+        
         while flag:
 
             response = scraper.get(f'https://ness-usa.ttcportals.com/search/jobs/in/country/romania?page={page}', timeout=30)
