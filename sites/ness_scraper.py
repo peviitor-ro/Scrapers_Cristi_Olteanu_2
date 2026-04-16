@@ -8,7 +8,13 @@ class Ness(Scraper):
     def get_jobs(self):
         page = 1
         flag = True
-        scraper = cloudscraper.create_scraper()
+        scraper = cloudscraper.create_scraper(
+    browser={
+        'browser': 'chrome',
+        'platform': 'windows',
+        'mobile': False
+    }
+)
         
         while flag:
 
