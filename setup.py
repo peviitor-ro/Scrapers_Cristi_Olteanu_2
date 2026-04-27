@@ -13,6 +13,8 @@ setup(
         'beautifulsoup4',
         'lxml',
         'requests',
+        'selenium',
+        'webdriver-manager',
     ],
     python_requires='>=3.10',
 )
