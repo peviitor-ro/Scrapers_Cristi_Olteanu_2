@@ -8,6 +8,8 @@ Requires-Python: >=3.10
 Requires-Dist: beautifulsoup4
 Requires-Dist: lxml
 Requires-Dist: requests
+Requires-Dist: selenium
+Requires-Dist: webdriver-manager
 Dynamic: author
 Dynamic: requires-dist
 Dynamic: requires-python
