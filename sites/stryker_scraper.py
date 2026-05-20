@@ -13,6 +13,8 @@ class Stryker(Scraper):
         response = self.post_json(json=payload)['jobPostings']
 
         for job in response:
+            if 'externalPath' not in job:
+                continue
             link = 'https://stryker.wd1.myworkdayjobs.com/en-US/StrykerCareers' + job['externalPath']
             title = job['title']
             link_job_info = 'https://stryker.wd1.myworkdayjobs.com/wday/cxs/stryker/StrykerCareers' + job['externalPath']
