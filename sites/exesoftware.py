@@ -1,5 +1,3 @@
-import requests
-
 from src.scrapers import Scraper
 
 
@@ -17,12 +15,10 @@ class ExeSoftware(Scraper):
 
                 if link:
                     title = job.find('h5').text
+                    text = job.find('div', class_='wpb_raw_code wpb_raw_html').text.lower().strip()
+                    remote = 'remote' if 'remote' in text else 'on-site'
 
-                    if requests.get(link).status_code == 200:
-                        text = job.find('div', class_='wpb_raw_code wpb_raw_html').text.lower().strip()
-                        remote = 'remote' if 'remote' in text else 'on-site'
-
-                        self.get_jobs_dict(title, link, 'Bucuresti', remote)
+                    self.get_jobs_dict(title, link, 'Bucuresti', remote)
 
         return self.jobs_list
 
