@@ -13,7 +13,7 @@ class BookingHoldings(Scraper):
                            "descending": "false", "internal": "false", "tags1": "Booking Holdings COE Company Hierarchy"}
             headers = self.get_cookies('session_id', 'jasession')
 
-            jobs = self.get_json(headers=headers, params=querystring)['jobs']
+            jobs = self.get_json(headers=headers, params=querystring).get('jobs', [])
 
             if jobs:
 
