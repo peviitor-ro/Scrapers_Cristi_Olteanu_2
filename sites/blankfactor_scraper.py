@@ -10,8 +10,11 @@ class Blankfactor(Scraper):
             "offset": 0,
             "searchText": ""
         }
-        headers = self.get_cookies('wd-browser-id', 'PLAY_SESSION', ' vps-cke', 'WorkdayLB_UI_Apache')
-        response = self.post_json(headers=headers, json=payload)['jobPostings']
+        headers = self.get_cookies('wd-browser-id', 'PLAY_SESSION', 'vps-cke', '__cf_bm', '_cfuvid')
+        response = self.post_json(headers=headers, json=payload)
+        if 'jobPostings' not in response:
+            return self.jobs_list
+        response = response['jobPostings']
 
         for job in response:
             job_type = 'on-site'
