@@ -1,3 +1,5 @@
+import json
+
 from src.scrapers import Scraper
 from src.validate_city import validate_city
 
@@ -13,7 +15,11 @@ class BookingHoldings(Scraper):
                            "descending": "false", "internal": "false", "tags1": "Booking Holdings COE Company Hierarchy"}
             headers = self.get_cookies('session_id', 'jasession')
 
-            jobs = self.get_json(headers=headers, params=querystring).get('jobs', [])
+            try:
+                response = self.get_json(headers=headers, params=querystring)
+                jobs = response.get('jobs', [])
+            except (json.JSONDecodeError, TypeError):
+                jobs = []
 
             if jobs:
 
