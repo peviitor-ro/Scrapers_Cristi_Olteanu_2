@@ -6,11 +6,11 @@ class Endava(Scraper):
     def get_jobs_per_city(self, city, page):
         headers = self.get_cookies('AWSALB', 'AWSALBCORS')
         querystring = {"search": "Romania", "type": "location", "value": f"{city}, RO", "page": f"{page}"}
-        jobs = self.get_soup(params=querystring, headers=headers).find_all('a', class_='link--block details')
+        jobs = self.get_soup(params=querystring, headers=headers).select('a.link--block.details')
 
         if jobs:
             for job in jobs:
-                title = job.find('h4', class_='details-title job-title link--block-target').text
+                title = job.select_one('h4.details-title.job-title.link--block-target').text
                 link_job = job.get('href')
 
                 self.get_jobs_dict(title, link_job, self.get_validated_city(city))
@@ -23,10 +23,10 @@ class Endava(Scraper):
         headers = self.get_cookies('AWSALB', 'AWSALBCORS')
         link = 'https://careers.smartrecruiters.com/Endava'
         querystring = {"search": "Romania"}
-        city_slots = self.get_link_soup(link=link, params=querystring, headers=headers).find_all('ul', class_='list--dotted title-list')
+        city_slots = self.get_link_soup(link=link, params=querystring, headers=headers).select('ul.list--dotted.title-list')
 
-        city_hash = {slot.find('h3', class_='opening-title title display--inline-block text--default').text.split(',')[0]:
-                         int(slot.find('span', class_='title').text.split()[0])
+        city_hash = {slot.select_one('h3.opening-title.title.display--inline-block.text--default').text.split(',')[0]:
+                         int(slot.select_one('span.title').text.split()[0])
                      for slot in city_slots}
 
         for key, value in city_hash.items():
