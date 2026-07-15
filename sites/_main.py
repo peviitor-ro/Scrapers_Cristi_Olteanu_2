@@ -203,7 +203,16 @@ def test_scraper_repair(scraper_name):
     return False
 
 
+def extract_no_jobs(stdout):
+    no_jobs_companies = []
+    for line in stdout.splitlines():
+        if line.startswith("NO_JOBS: "):
+            no_jobs_companies.append(line.split("NO_JOBS: ", 1)[1].strip())
+    return no_jobs_companies
+
+
 def main():
+    no_jobs_companies = []
     for site in sorted(os.listdir(SITES_DIR)):
         if not site.endswith(".py") or site in EXCLUDE:
             continue
@@ -218,6 +227,8 @@ def main():
             continue
 
         cleanup_created_sibling_files(script_path, existing_files)
+
+        no_jobs_companies.extend(extract_no_jobs(action.stdout))
 
         if action.returncode == 0:
             print("Success scraping " + site)
@@ -239,11 +250,20 @@ def main():
 
         cleanup_created_sibling_files(script_path, existing_files)
 
+        no_jobs_companies.extend(extract_no_jobs(repaired_action.stdout))
+
         if repaired_action.returncode == 0:
             print("Success scraping after auto-repair " + site)
         else:
             print("Auto-repair did not fix " + site)
             print(truncate_output(repaired_action.stderr))
+
+    if no_jobs_companies:
+        print(f"\n=== Firme fara joburi ({len(no_jobs_companies)}) ===")
+        for company in sorted(set(no_jobs_companies)):
+            print(f"  - {company}")
+    else:
+        print("\n=== Toate firmele au joburi ===")
 
 
 class Scraper:
@@ -251,6 +271,7 @@ class Scraper:
         self.exclude = set(EXCLUDE if exclude is None else exclude)
 
     def run(self):
+        no_jobs_companies = []
         for site in sorted(os.listdir(SITES_DIR)):
             if not site.endswith(".py") or site in self.exclude:
                 continue
@@ -266,12 +287,21 @@ class Scraper:
 
             cleanup_created_sibling_files(script_path, existing_files)
 
+            no_jobs_companies.extend(extract_no_jobs(action.stdout))
+
             if action.returncode == 0:
                 print(f"Success scraping {site} with exit code {action.returncode}")
                 continue
 
             print(f"Error scraping {site} with exit code {action.returncode}")
             print(truncate_output(action.stderr))
+
+        if no_jobs_companies:
+            print(f"\n=== Firme fara joburi ({len(no_jobs_companies)}) ===")
+            for company in sorted(set(no_jobs_companies)):
+                print(f"  - {company}")
+        else:
+            print("\n=== Toate firmele au joburi ===")
 
 
 if __name__ == "__main__":

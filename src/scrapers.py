@@ -92,6 +92,8 @@ class Scraper(ABC):
         })
 
     def push_peviitor(self):
+        if not self.jobs_list:
+            print(f"NO_JOBS: {self.company_name}")
         UpdatePeViitor().update_jobs(self.company_name, self.jobs_list)
         UpdatePeViitor().update_logo(self.company_name, self.logo_url)
 
