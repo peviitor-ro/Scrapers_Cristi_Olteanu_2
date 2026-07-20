@@ -1,60 +1,54 @@
 from src.scrapers import Scraper
 
+ROMANIA_ID = '81fca7f7-a70b-4568-ad38-318aaf996f55'
+
 
 class Siena(Scraper):
 
     def get_jobs(self):
-        querystring = {"op": "ApiJobBoardWithTeams"}
         payload = {
             "operationName": "ApiJobBoardWithTeams",
             "variables": {"organizationHostedJobsPageName": "siena"},
-            "query": "query ApiJobBoardWithTeams($organizationHostedJobsPageName: String!) "
-                     "{\n  jobBoard: jobBoardWithTeams"
-                     "(\n    organizationHostedJobsPageName: $organizationHostedJobsPageName\n  )"
-                     " {\n    teams {\n      id\n      name\n      parentTeamId\n      __typename\n    }"
-                     "\n    jobPostings "
-                     "{\n      id\n      title\n      teamId\n      "
-                     "locationId\n      locationName\n      employmentType\n      secondaryLocations "
-                     "{\n        ...JobPostingSecondaryLocationParts\n        __typename\n      }"
-                     "\n      compensationTierSummary\n      __typename\n    }"
-                     "\n    __typename\n  }\n}\n\nfragment JobPostingSecondaryLocationParts on JobPostingSecondaryLocation "
-                     "{\n  locationId\n  locationName\n  __typename\n}"}
+            "query": (
+                "query ApiJobBoardWithTeams($organizationHostedJobsPageName: String!) {"
+                "  jobBoard: jobBoardWithTeams(organizationHostedJobsPageName: $organizationHostedJobsPageName) {"
+                "    jobPostings {"
+                "      id title locationId locationName"
+                "      secondaryLocations { locationId locationName __typename }"
+                "      __typename"
+                "    }"
+                "    __typename"
+                "  }"
+                "}"
+            ),
+        }
 
-        response = self.post_json(headers=self.headers, json=payload, params=querystring
-                                  )['data']['jobBoard']['jobPostings']
+        response = self.post_json(
+            headers=self.headers,
+            json=payload,
+            params={"op": "ApiJobBoardWithTeams"},
+        )
 
-        for job in response:
+        postings = response['data']['jobBoard']['jobPostings']
 
-            locations = job['secondaryLocations']
-            cities = []
+        for job in postings:
+            if not self._has_romania(job):
+                continue
+
             title = job['title']
-            link = f"https://jobs.ashbyhq.com/siena/{job['id']}?utm_source=zLmkeq71qy"
-            first_city = job['locationName']
-
-            if 'remote' in title.lower():
-                job_type = 'remote'
-            elif 'hybrid' in title.lower():
-                job_type = 'hibrid'
-            else:
-                job_type = 'on-site'
-
-            for location in locations:
-                secondary_location = location['locationName']
-
-                if 'Cluj' in secondary_location:
-                    cities.append('Cluj-Napoca')
-                if 'Bucharest' in secondary_location:
-                    cities.append('Bucuresti')
-                if 'Iasi' in secondary_location:
-                    cities.append('Iasi')
-
-            if first_city in ['Bucharest', 'Cluj', 'Iasi']:
-                cities.append(self.get_validated_city(first_city))
-
-            if cities:
-                self.get_jobs_dict(title, link, cities, job_type)
+            link = f"https://jobs.ashbyhq.com/siena/{job['id']}"
+            self.get_jobs_dict(title, link, 'Bucuresti')
 
         return self.jobs_list
+
+    @staticmethod
+    def _has_romania(job):
+        if job.get('locationId') == ROMANIA_ID:
+            return True
+        return any(
+            sl.get('locationId') == ROMANIA_ID
+            for sl in job.get('secondaryLocations', [])
+        )
 
 
 siena = Siena(
