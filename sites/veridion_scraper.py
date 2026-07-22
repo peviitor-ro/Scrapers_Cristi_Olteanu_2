@@ -1,22 +1,38 @@
 from src.scrapers import Scraper
+from src.validate_city import validate_city
 
 
 class Veridion(Scraper):
 
     def get_jobs(self):
         response = self.get_soup()
-        jobs = response.find_all('div', class_='career-wrap')
 
-        for job in jobs:
-            title = job.find('h2', class_='fw-bold').text.strip()
-            link = job.find('a', class_='d-inline-block w-100 careers-apply transition-ltr-white-black text-decoration-none')['href']
-            location_info = job.find('h5', class_='light-grey').text.strip()
-            city = 'Bucuresti' if 'Bucharest' in location_info else None
-            job_type = 'hybrid' if 'hybrid' in location_info else 'on-site'
+        for a in response.find_all('a', href=True):
+            href = a['href']
+            if not href.startswith('/company/careers/') or href == '/company/careers':
+                continue
 
-            if city:
-                self.get_jobs_dict(title, link, city, job_type, county='Bucuresti')
+            title_el = a.find('h3', attrs={'data-slot': 'tile-title'})
+            if not title_el:
+                continue
+            title = title_el.text.strip()
+
+            location_el = a.find('span', class_='text-label-md')
+            location_text = location_el.text.strip() if location_el else ''
+            parts = [p.strip() for p in location_text.split('·')]
+            city = validate_city(parts[-1]) if parts else 'Bucuresti'
+
+            work_el = a.find('span', class_='inline-flex')
+            work_text = work_el.text.strip().lower() if work_el else 'on-site'
+            job_type = 'hybrid' if 'hybrid' in work_text else 'on-site'
+
+            link = 'https://veridion.com' + href
+            county = city
+
+            self.get_jobs_dict(title, link, city, job_type, county=county)
+
         return self.jobs_list
+
 
 veridion = Veridion(
     company_name='veridion',
@@ -25,4 +41,3 @@ veridion = Veridion(
 )
 veridion.get_jobs()
 veridion.push_peviitor()
-
