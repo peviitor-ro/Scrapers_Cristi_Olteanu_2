@@ -50,6 +50,7 @@ sites/wyser_scraper.py
 sites/xylem_scraper.py
 src/__init__.py
 src/county.py
+src/empty_jobs_repair.py
 src/publish_validated_jobs.py
 src/scrapers.py
 src/update_peviitor.py

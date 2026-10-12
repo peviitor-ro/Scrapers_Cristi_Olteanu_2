@@ -4,18 +4,16 @@ from src.scrapers import Scraper
 class Snyk(Scraper):
 
     def get_jobs(self):
-        jobs = self.get_json().get('data', [])
+        jobs = self.get_json().get('jobs', [])
 
         for job in jobs:
             title = job['title'].strip()
-            link = job['url']
-            locations = job.get('locations', [])
-            locations = locations if isinstance(locations, list) else [locations]
+            link = job['jobUrl']
+            locations = [job.get('location')]
+            locations += [location.get('location') for location in job.get('secondaryLocations', [])]
 
-            for location in locations:
-                location_name = location.get('@_Descriptor', '')
-
-                if 'Romania' not in location_name:
+            for location_name in locations:
+                if not location_name or 'Romania' not in location_name:
                     continue
 
                 city = location_name.split(' - ', 1)[-1].replace(' Office', '').replace(' Local', '').strip()
@@ -29,7 +27,7 @@ class Snyk(Scraper):
 
 snyk = Snyk(
     company_name='snyk',
-    url='https://snyk.io/api/next/jobs/',
+    url='https://api.ashbyhq.com/posting-api/job-board/snyk',
     logo_url='https://snyk.io/_next/image/?url=https%3A%2F%2Fres.cloudinary.com%2Fsnyk%2Fimage%2Fupload%2Fv1669650003%2Fpress-kit%2Ftitle-card-logo-white-1.png&w=2560&q=75'
 )
 snyk.get_jobs()

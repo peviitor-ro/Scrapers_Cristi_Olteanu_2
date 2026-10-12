@@ -11,6 +11,7 @@ setup(
 
     install_requires=[
         'beautifulsoup4',
+        'soupsieve<3.0',
         'lxml',
         'requests',
         'selenium',
