@@ -5,6 +5,11 @@ from .county import get_county
 import re
 from .update_peviitor import UpdatePeViitor
 from .validate_city import validate_city
+from .empty_jobs_repair import (
+    NO_JOBS_MARKER,
+    maybe_repair_empty_jobs_output,
+    scraper_path_for,
+)
 
 
 class Scraper(ABC):
@@ -93,7 +98,14 @@ class Scraper(ABC):
 
     def push_peviitor(self):
         if not self.jobs_list:
-            print(f"NO_JOBS: {self.company_name}")
+            print(f"{self.company_name} has no jobs")
+            # markerul se tipareste inainte de hook: repararea reusita se
+            # incheie cu SystemExit(0) si ar suprima orice print de dupa el
+            print(f"{NO_JOBS_MARKER} {self.company_name}", flush=True)
+            maybe_repair_empty_jobs_output(
+                self.company_name, scraper_path=scraper_path_for(self)
+            )
+            return
         UpdatePeViitor().update_jobs(self.company_name, self.jobs_list)
         UpdatePeViitor().update_logo(self.company_name, self.logo_url)
 

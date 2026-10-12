@@ -6,3 +6,5 @@ scrapers_forzza/000_delete_api_data.py
 /.idea
 /env
 /*.egg-info
+.cache/
+.DS_Store
