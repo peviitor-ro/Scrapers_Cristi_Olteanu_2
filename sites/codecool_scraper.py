@@ -9,11 +9,10 @@ class CodeCool(Scraper):
 
         for job in jobs:
             remote = 'remote' if job['locationType'] == '1' else 'on-site'
-            if remote == 'remote':
-                title = job['jobOpeningName']
-                link = 'https://codecool.bamboohr.com/careers/' + job['id']
+            title = job['jobOpeningName']
+            link = 'https://codecool.bamboohr.com/careers/' + job['id']
 
-                self.get_jobs_dict(title, link, 'Bucuresti', remote)
+            self.get_jobs_dict(title, link, 'Bucuresti', remote)
 
 
 codecool = CodeCool(

@@ -4,22 +4,26 @@ from src.scrapers import Scraper
 class Mindspace(Scraper):
 
     def get_jobs(self):
-        jobs = self.get_soup().find_all('a', class_='career-item w-inline-block active')
+        jobs = self.get_soup().find_all('div', class_='afb-careers-lobby__job')
 
         for job in jobs:
-            title = job.find('h3', class_='career-tab-title-2').text
-            link = job.get('href')
-            city = 'Bucuresti' if 'Bucharest' in job.find('p', class_='career-tab-text-2').text else None
+            title = job.find('div', class_='afb-careers-lobby__job-name').text.strip()
+            link = job.find('a', class_='afb-careers-lobby__job-link').get('href')
+            city_el = job.find('div', class_='afb-careers-lobby__job-city')
 
-            if city is not None:
-                self.get_jobs_dict(title, link, city)
+            if city_el is None:
+                continue
+
+            city = city_el.text.strip()
+
+            self.get_jobs_dict(title, link, city)
 
         return self.jobs_list
 
 
 mindpspace = Mindspace(
     company_name='Mindspace',
-    url='https://www.mindspace.me/careers/#opportunities',
+    url='https://www.mindspace.me/careers/',
     logo_url=''
 )
 mindpspace.get_jobs()
