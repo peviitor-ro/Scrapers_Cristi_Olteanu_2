@@ -7,7 +7,7 @@ class SuperBet(Scraper):
         page = 1
 
         while True:
-            response = self.get_link_soup(f'{self.url}&page={page}')
+            response = self.get_link_soup(f'{self.url}?page={page}')
             jobs = response.find_all('a', href=True)
             found_jobs = False
 
@@ -39,8 +39,8 @@ class SuperBet(Scraper):
 
 superbet = SuperBet(
     company_name='superbet',
-    url='https://job-boards.eu.greenhouse.io/superbet?offices%5B%5D=4005477101',
-    logo_url='https://s101-recruiting.cdn.greenhouse.io/external_greenhouse_job_boards/logos/400/134/810/resized/favicon.png?1673612131'
+    url='https://job-boards.eu.greenhouse.io/super',
+    logo_url='https://s101-recruiting.cdn.greenhouse.io/external_greenhouse_job_boards/logos/400/134/810/original/Super-Logo.jpg?1765813793'
 )
 superbet.get_jobs()
 superbet.push_peviitor()
