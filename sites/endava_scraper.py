@@ -25,7 +25,7 @@ class Endava(Scraper):
         querystring = {"search": "Romania"}
         city_slots = self.get_link_soup(link=link, params=querystring, headers=headers).select('ul.list--dotted.title-list')
 
-        city_hash = {slot.select_one('h3.opening-title.title.display--inline-block.text--default').text.split(',')[0]:
+        city_hash = {slot.select_one('h3.opening-title').text.split(',')[0]:
                          int(slot.select_one('span.title').text.split()[0])
                      for slot in city_slots}
 
