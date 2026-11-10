@@ -11,6 +11,7 @@ Requires-Dist: lxml
 Requires-Dist: requests
 Requires-Dist: selenium
 Requires-Dist: webdriver-manager
+Requires-Dist: curl-cffi
 Dynamic: author
 Dynamic: requires-dist
 Dynamic: requires-python

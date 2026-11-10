@@ -4,3 +4,4 @@ lxml
 requests
 selenium
 webdriver-manager
+curl-cffi
