@@ -16,6 +16,7 @@ setup(
         'requests',
         'selenium',
         'webdriver-manager',
+        'curl-cffi',
     ],
     python_requires='>=3.10',
 )
