@@ -10,7 +10,14 @@ class Stryker(Scraper):
             "offset": 0,
             "searchText": ""
         }
-        response = self.post_json(json=payload)['jobPostings']
+        headers = self.get_cookies('wd-browser-id', 'PLAY_SESSION', 'wday_vps_cookie', '__cf_bm', '__cflb', '_cfuvid')
+        if not headers:
+            headers = self.headers.copy()
+            headers['Content-Type'] = 'application/json'
+            headers['Accept'] = 'application/json'
+
+        data = self.post_json(headers=headers, json=payload)
+        response = data.get('jobPostings', []) if isinstance(data, dict) else []
 
         for job in response:
             if 'externalPath' not in job:

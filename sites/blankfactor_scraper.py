@@ -10,39 +10,58 @@ class Blankfactor(Scraper):
             "offset": 0,
             "searchText": ""
         }
-        headers = self.get_cookies('wd-browser-id', 'PLAY_SESSION', 'vps-cke', '__cf_bm', '_cfuvid')
-        response = self.post_json(headers=headers, json=payload)
-        if 'jobPostings' not in response:
+        headers = self.get_cookies('wd-browser-id', 'PLAY_SESSION', 'wday_vps_cookie', 'vps-cke', '__cf_bm', '__cflb', '_cfuvid')
+        if not headers:
+            headers = self.headers.copy()
+            headers['Content-Type'] = 'application/json'
+            headers['Accept'] = 'application/json'
+
+        try:
+            response = self.post_json(headers=headers, json=payload)
+        except Exception:
             return self.jobs_list
-        response = response['jobPostings']
 
-        for job in response:
-            job_type = 'on-site'
-            title = job['title']
-            link = f"https://blankfactor.wd12.myworkdayjobs.com/en-US/Blankfactor_External{job['externalPath']}"
-            link_info = f"https://blankfactor.wd12.myworkdayjobs.com/wday/cxs/blankfactor/Blankfactor_External{job['externalPath']}"
-            first_city = self.get_validated_city(job['locationsText'].split()[-1])
-            romanian_cities = ['Cluj-Napoca', 'Bucuresti']
-            first_city_link = self.get_validated_city(self.get_json_link(link_info)['jobPostingInfo']['location'].split()[-1])
+        if not isinstance(response, dict) or 'jobPostings' not in response:
+            return self.jobs_list
+        jobs = response['jobPostings'] or []
 
-            cities = [first_city] if first_city in romanian_cities else []
-
+        romanian_cities = ['Cluj-Napoca', 'Bucuresti']
+        for job in jobs:
             try:
-                additional_locations = [
-                    self.get_validated_city(city.split()[-1])
-                    for city in self.get_json_link(link_info)['jobPostingInfo']['additionalLocations']]
-            except KeyError:
-                additional_locations = []
+                job_type = 'on-site'
+                title = job['title']
+                link = f"https://blankfactor.wd12.myworkdayjobs.com/en-US/Blankfactor_External{job['externalPath']}"
+                link_info = f"https://blankfactor.wd12.myworkdayjobs.com/wday/cxs/blankfactor/Blankfactor_External{job['externalPath']}"
 
-            cities.extend([loc for loc in additional_locations if loc in romanian_cities])
+                locations_text = (job.get('locationsText') or '').strip()
+                first_city = self.get_validated_city(locations_text.split()[-1]) if locations_text else None
 
-            if first_city_link == 'Remote':
-                job_type = 'remote'
+                try:
+                    job_info = self.get_json_link(link_info).get('jobPostingInfo', {})
+                except Exception:
+                    job_info = {}
 
-            if first_city_link in romanian_cities and first_city != first_city_link:
-                cities.append(first_city_link)
+                location_text = (job_info.get('location') or '').strip()
+                first_city_link = self.get_validated_city(location_text.split()[-1]) if location_text else first_city
 
-            self.get_jobs_dict(title, link, cities, job_type)
+                cities = [first_city] if first_city in romanian_cities else []
+
+                additional_locations = job_info.get('additionalLocations') or []
+                for city in additional_locations:
+                    if isinstance(city, str) and city.strip():
+                        loc = self.get_validated_city(city.split()[-1])
+                        if loc in romanian_cities:
+                            cities.append(loc)
+
+                if first_city_link == 'Remote':
+                    job_type = 'remote'
+
+                if first_city_link in romanian_cities and first_city != first_city_link:
+                    cities.append(first_city_link)
+
+                self.get_jobs_dict(title, link, cities, job_type)
+            except Exception:
+                continue
 
         return self.jobs_list
 
