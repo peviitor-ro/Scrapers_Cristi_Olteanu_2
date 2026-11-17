@@ -1,3 +1,4 @@
+import json
 import re
 import time
 
@@ -11,6 +12,7 @@ from src.scrapers import Scraper
 class Ness(Scraper):
 
     MAX_ATTEMPTS = 3
+    PUSH_ATTEMPTS = 5
     RETRY_DELAY = 2
     IMPERSONATES = ('firefox133', 'firefox135', 'chrome131', 'chrome120', 'safari17_0')
     SEARCH_URLS = (
@@ -121,5 +123,17 @@ ness = Ness(
     url='https://ness-usa.ttcportals.com/search/jobs/in/country/romania',
     logo_url='https://ness-usa.ttcportals.com/system/production/assets/357234/original/Ness--logo.png'
 )
+
+
+def push_jobs():
+    for _ in range(ness.PUSH_ATTEMPTS):
+        try:
+            ness.push_peviitor()
+            return
+        except Exception:
+            time.sleep(ness.RETRY_DELAY)
+    print(json.dumps(ness.jobs_list, indent=4))
+
+
 ness.get_jobs()
-ness.push_peviitor()
+push_jobs()

@@ -1,7 +1,28 @@
+import time
+
+import requests
+
 from src.scrapers import Scraper
 
 
 class Rws(Scraper):
+
+    MAX_ATTEMPTS = 5
+    RETRY_DELAY = 2
+
+    def get_search_soup(self):
+        params = {
+            'ss': '1',
+            'in_iframe': '1',
+            'searchLocation': '13526--Remote',
+        }
+        for attempt in range(self.MAX_ATTEMPTS):
+            try:
+                return self.get_soup(params=params, timeout=30)
+            except (requests.RequestException, OSError):
+                if attempt == self.MAX_ATTEMPTS - 1:
+                    raise
+                time.sleep(self.RETRY_DELAY)
 
     def get_jobs(self):
         self.headers = {
@@ -16,11 +37,7 @@ class Rws(Scraper):
         }
 
         while True:
-            soup = self.get_soup(params={
-                'ss': '1',
-                'in_iframe': '1',
-                'searchLocation': '13526--Remote',
-            })
+            soup = self.get_search_soup()
 
             rows = soup.find_all('div', class_='row')
             found = False
