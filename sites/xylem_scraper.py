@@ -10,7 +10,8 @@ class Xylem(Scraper):
             headers['Content-Type'] = 'application/json'
 
         all_jobs = []
-        for offset in range(0, 1000, 20):
+        offset = 0
+        while True:
             payload = {
                 "limit": 20,
                 "offset": offset,
@@ -19,33 +20,44 @@ class Xylem(Scraper):
             }
             try:
                 response = self.post_json(headers=headers, json=payload)
-                jobs = response.get('jobPostings', [])
-                if not jobs:
-                    break
-                all_jobs.extend(jobs)
             except Exception:
+                break
+            jobs = response.get('jobPostings', []) if isinstance(response, dict) else []
+            if not jobs:
+                break
+            all_jobs.extend(jobs)
+            offset += len(jobs)
+            total = response.get('total')
+            if isinstance(total, int) and offset >= total:
                 break
 
         for job in all_jobs:
-            locations = job.get('locations') or []
-            locations_str = str(locations).lower()
+            location_parts = [job.get('locationsText') or '']
+            location_parts.extend(job.get('bulletFields') or [])
+            locations_str = ' '.join(str(part) for part in location_parts).lower()
             if 'romania' not in locations_str and 'bucure' not in locations_str and 'bucharest' not in locations_str:
                 continue
             title = job['title']
-            link = "https://xylem.wd5.myworkdayjobs.com/en-US/xylem-careers" + job['externalPath']
-            link_job_type = "https://xylem.wd5.myworkdayjobs.com/wday/cxs/xylem/xylem-careers"
+            external_path = job['externalPath']
+            link = "https://xylem.wd5.myworkdayjobs.com/en-US/xylem-careers" + external_path
+            link_job_type = "https://xylem.wd5.myworkdayjobs.com/wday/cxs/xylem/xylem-careers" + external_path
             try:
-                job_info = self.get_json_link(link_job_type + job['externalPath'])
-                job_type = "hybrid" if job_info.get('jobPostingInfo', {}).get('remoteType') else "on-site"
+                job_info = self.get_json_link(link_job_type).get('jobPostingInfo', {})
             except Exception:
-                job_type = "on-site"
+                job_info = {}
+            remote_type = str(job_info.get('remoteType') or '').lower()
+            if 'hybrid' in remote_type:
+                job_type = 'hybrid'
+            elif 'remote' in remote_type:
+                job_type = 'remote'
+            else:
+                job_type = 'on-site'
             city = "Bucuresti"
-            if locations and isinstance(locations, list) and locations:
-                loc = locations[0]
-                if isinstance(loc, dict):
-                    city = loc.get('city') or loc.get('location') or "Bucuresti"
-                elif isinstance(loc, str):
-                    city = loc
+            for part in location_parts:
+                part = str(part)
+                if 'bucure' in part.lower() or 'bucharest' in part.lower():
+                    city = self.get_validated_city(part.split(',')[0].strip())
+                    break
             self.get_jobs_dict(title, link, city, job_type)
 
         return self.jobs_list
