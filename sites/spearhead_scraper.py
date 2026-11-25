@@ -5,11 +5,16 @@ class Spearhead(Scraper):
 
     def get_jobs(self):
         response = self.get_soup()
-        jobs = response.find_all('a', class_='text-decoration-none')
+        jobs = response.select(
+            '#jobs_grid a[href*="/jobs/detail/"], #jobs_grid a.text-decoration-none'
+        )
 
         for job in jobs:
+            title_tag = job.find('h3')
+            if title_tag is None:
+                continue
             link = 'https://spearhead.systems' + job.get('href')
-            title = job.find('h3').text.strip()
+            title = title_tag.text.strip()
 
             self.get_jobs_dict(title, link, 'Bucuresti')
 
