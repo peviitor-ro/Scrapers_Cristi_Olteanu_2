@@ -39,7 +39,7 @@ class SuperBet(Scraper):
 
 superbet = SuperBet(
     company_name='superbet',
-    url='https://job-boards.eu.greenhouse.io/super',
+    url='https://job-boards.eu.greenhouse.io/superbetretail',
     logo_url='https://s101-recruiting.cdn.greenhouse.io/external_greenhouse_job_boards/logos/400/134/810/original/Super-Logo.jpg?1765813793'
 )
 superbet.get_jobs()
